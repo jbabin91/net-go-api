@@ -5,13 +5,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/sirupsen/logrus"
+	"github.com/Sirupsen/logrus"
 )
 
 // LoggingConfig specifies all the parameters needed for logging
 type LoggingConfig struct {
-	Level string
-	File  string
+	Level string `json:"level"`
+	File  string `json:"file"`
 }
 
 // ConfigureLogging will take the logging configuration and also adds

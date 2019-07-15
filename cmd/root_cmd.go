@@ -2,8 +2,10 @@ package cmd
 
 import (
 	"log"
+	"os"
 
 	"net-go-api/config"
+
 	"github.com/spf13/cobra"
 )
 
@@ -21,15 +23,20 @@ func RootCommand() *cobra.Command {
 }
 
 func run(cmd *cobra.Command, args []string) {
-	c, err := config.LoadConfig(cmd)
+	conf, err := config.LoadConfig(cmd)
 	if err != nil {
 		log.Fatal("Failed to load config: " + err.Error())
 	}
 
-	logger, err := config.ConfigureLogging(&c.LogConfig)
+	logger, err := config.ConfigureLogging(&conf.LogConfig)
 	if err != nil {
 		log.Fatal("Failed to configure logging: " + err.Error())
 	}
 
-	logger.Infof("Starting with config: %+v", c)
+	server := api.NewAPI(logger, config)
+	logger.Infof("Starting up server on port %d", config.Port)
+	if err := server.Start(); err != nil {
+		logger.WithError(err).Error("Error while running server")
+		os.Exit(1)
+	}
 }
