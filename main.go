@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"net-go-api/cmd"
+	"github.com/jbabin91/net-go-api/cmd"
 )
 
 func main() {
